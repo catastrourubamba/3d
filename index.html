@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>PISOS</title>
+<link rel="shortcut icon" href="images/3d.svg">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="./Qgis2threejs.css">
+<script src="./threejs/three.min.js"></script>
+<script src="./threejs/OrbitControls.js"></script>
+<script src="./threejs/ViewHelper.js"></script>
+<script src="./Qgis2threejs.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+  <div id="preloader">
+    <div id="loader"></div>
+  </div>
+<!-- Loading HTML -->
+<div id="view">
+  <div id="labels"></div>
+  <div id="northarrow"></div>
+  <div id="navigation"></div>
+</div>
+
+<!-- popup -->
+<div id="popup">
+  <div id="closebtn">&times;</div>
+  <div id="popupbar"></div>
+  <div id="popupbody">
+    <div id="popupcontent"></div>
+
+    <!-- query result -->
+    <div id="queryresult">
+      <table id="qr_layername_table">
+        <caption>Capa</caption>
+        <tr><td id="qr_layername"></td></tr>
+      </table>
+
+      <table id="qr_coords_table">
+        <caption>Click Coordenadas</caption>
+        <tr><td id="qr_coords"></td></tr>
+      </table>
+
+      <!-- camera actions -->
+      <div class="action-btn action-zoom" onclick="app.cameraAction.zoomIn(); app.closePopup();">Zoom aqui</div>
+      <div class="action-btn action-move" onclick="app.cameraAction.move(); app.closePopup();">Mover aqui</div>
+      <div class="action-btn action-orbit" onclick="app.cameraAction.orbit(); app.closePopup();">Orbitar alrededor de aqui</div>
+
+      <!-- attributes -->
+      <table id="qr_attrs_table">
+        <caption>Attributes</caption>
+      </table>
+    </div>
+
+    <!-- page info -->
+    <div id="pageinfo">
+
+
+      <div id="about">
+      <div>
+        <span id="lib_proj4js"><a href="https://trac.osgeo.org/proj4js/" target="_blank"></a></span>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- progress bar -->
+<div id="progress"><div id="bar"></div></div>
+
+<!-- header and footer -->
+<div id="header">PISOS</div>
+
+<script>
+
+Q3D.Config.allVisible = true;
+Q3D.Config.viewpoint = {lookAt:{x:0.0,y:0.0,z:0.0},pos:{x:-4.905231333879642,y:-40.485380604814665,z:15.04119495249987}};
+Q3D.Config.localMode = true;
+Q3D.Config.northArrow.visible = true;
+Q3D.Config.northArrow.color = 0x1f78b4;
+if (typeof proj4 === "undefined") document.getElementById("lib_proj4js").style.display = "none";
+
+var container = document.getElementById("view"),
+    app = Q3D.application;
+
+app.init(container);       // initialize viewer
+
+// load the scene
+app.loadSceneFile("./data/index/scene.js", function (scene) {
+  // scene file has been loaded
+  app.start();
+}, function (scene) {
+  // all relevant files have been loaded
+
+});
+
+document.getElementById("infobtn").onclick = app.showInfo;
+</script>
+<script src = "loader.js"></script>
+</body>
+</html>
